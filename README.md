@@ -1,6 +1,6 @@
 # Description
 
-This terraform module provisions an Ubuntu Azure Devops Build agents in AWS.
+This terraform module provisions Ubuntu Azure Devops Build agents in AWS.
 
 It preinstalls dotnet-sdk, kubectl and docker.
 
@@ -90,4 +90,4 @@ variable "asg_desired_size" {
 
 You can check example folder for a sample usage.
 
-Please check Microsoft Docs (https://docs.microsoft.com/en-us/azure/devops/pipelines/agents/v2-linux?view=azure-devops) for instructions that needs to be done on Azure Devops part.
+Please check Microsoft Docs (https://docs.microsoft.com/en-us/azure/devops/pipelines/agents/v2-linux?view=azure-devops) for instructions that needs to be followed on Azure Devops part.
