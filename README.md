@@ -19,7 +19,7 @@ variable "ssh_cidr_blocks" {
 }
 
 variable "subnet_ids" {
-  description = "List of cidr blocks for SSH access to the build agents"
+  description = "Subnet ids for the AutoScaling Group"
   type        = list
 }
 
