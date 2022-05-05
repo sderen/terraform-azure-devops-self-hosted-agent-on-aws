@@ -6,10 +6,38 @@ export VSTS_AGENT_INPUT_TOKEN=${token}
 export VSTS_AGENT_INPUT_POOL=${pool}
 
 cd /home/ubuntu
- 
-wget https://vstsagentpackage.azureedge.net/agent/2.169.1/vsts-agent-linux-x64-2.169.1.tar.gz
-mkdir myagent && cd myagent
-tar zxvf ../vsts-agent-linux-x64-2.169.1.tar.gz
+
+function download_and_extract_agent () {
+    
+    agent_releases_page=$(curl -L https://github.com/Microsoft/azure-pipelines-agent/releases)
+    
+    # extract latest version number from releases page
+    agent_version=`echo "$agent_releases_page" | grep -ioh "/download\/v\d.*\/" -m1 | grep -ioh "\d.\d*.\d"`
+    
+    # compose the download url based on the version provided
+    agent_download_url="https://vstsagentpackage.azureedge.net/agent/$agent_version/vsts-agent-linux-x64-$agent_version.tar.gz"
+
+    # if download page is not valid
+    if ! wget -q --method=HEAD $agent_download_url;
+    then
+        # assign version number manually
+        agent_version="2.204.0"
+
+        # recompose the download url based on the version provided
+        agent_download_url="https://vstsagentpackage.azureedge.net/agent/$agent_version/vsts-agent-linux-x64-$agent_version.tar.gz"
+    fi
+
+    # download the agent
+    wget $agent_download_url
+
+    mkdir myagent && cd myagent
+
+    # extract the agent into parent dir '/home/ubuntu'
+    tar zxvf ../vsts-agent-linux-x64-$agent_version.tar.gz
+}
+
+download_and_extract_agent
+
 ./bin/installdependencies.sh
 chown -R ubuntu:ubuntu .
 su ubuntu -c './config.sh --unattended'
